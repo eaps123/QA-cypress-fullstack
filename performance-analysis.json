@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-05-11T23:49:58.256Z",
+  "status": "CRITICAL",
+  "metrics": {
+    "avg": 14.26311866334172,
+    "p95": 19.707912300000004,
+    "failRate": 0.10017324923526705,
+    "vus": 500
+  },
+  "analysis": [
+    "P95 estável (20ms) durante execução",
+    "Taxa de erro crítica (10.02%)",
+    "Tempo médio saudável (14ms)",
+    "Teste executado com pico de 500 usuários virtuais"
+  ]
+}
