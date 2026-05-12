@@ -71,7 +71,7 @@ Utilizada para:
 ## 🏗️ Estrutura do Projeto
 
 ```bash
-qa-automation-fullstack/
+QA-automation-cypress/
 ├── api/
 │   ├── clients/
 │   │   └── apiClient.ts
@@ -141,9 +141,15 @@ qa-automation-fullstack/
 │   └── config.js
 │
 ├── reports/
-│   ├── playwright-report/
+│   ├── mochawesome/
 │   ├── screenshots/
 │   ├── videos/
+│   ├── api-summary.json
+│   ├── cucumber-report.html
+│   ├── cucumber-report.json
+│   ├── k6-summary.json
+│   ├── performance-analysis.json
+│   ├── playwright-report.json
 │   └── index.html
 │
 ├── scripts/
@@ -151,11 +157,21 @@ qa-automation-fullstack/
 │   ├── generate-performance-analysis.js
 │   └── generate-report.js
 │
-├── .github/workflows/ci.yml
+├── cypress/
+│   ├── fixtures/
+│   ├── downloads/
+│   └── support/
+│       ├── commands.ts
+│       └── e2e.ts
 │
+├── .gitignore
+├── .gitlab-ci.yml
+├── cypress.config.ts
+├── package-lock.json
 ├── package.json
 ├── tsconfig.json
 └── README.md
+
 ```
 
 ## 🧪 Cobertura de Testes

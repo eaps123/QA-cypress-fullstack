@@ -2,94 +2,82 @@ import {
   Given,
   When,
   Then
-} from '@cucumber/cucumber';
-import { expect } from '@playwright/test';
-import { users } from '../../config/data/users';
+} from "@badeball/cypress-cucumber-preprocessor";
+import { LoginPage } from "../pages/login.page";
+import { users } from "../../config/data/users";
 
-Given('que estou na página de login', async function () {
-  await this.loginPage.navigate();
-});
+const loginPage = new LoginPage();
 
-// LOGIN GENÉRICO
+Given('que estou na página de login', () => {
 
-When('realizo login com usuário {string}', async function (userType: string) {
-  const user =
-    users[userType as keyof typeof users];
-  await this.loginPage.login(
-    user.username,
-    user.password
-  );
-}
+    loginPage.navigate();
+  }
 );
 
-When('realizo login com usuário {string} e senha {string}', async function (
-  username: string,
-  password: string
-) {
-  await this.loginPage.login(
-    username,
-    password
-  );
-}
+When('realizo login com usuário {string}', (userType: string) => {
+
+    const user =
+      users[userType as keyof typeof users];
+
+    loginPage.login(
+      user.username,
+      user.password
+    );
+  }
 );
 
-// ASSERTS
+When('realizo login com usuário {string} e senha {string}',
+  (
+    username: string,
+    password: string
+  ) => {
 
-Then('devo ver a página de produtos', async function () {
-  await expect(this.page)
-    .toHaveURL(/inventory/);
-}
+    loginPage.login(
+      username,
+      password
+    );
+  }
 );
 
-Then('devo ver a mensagem {string}', async function (message: string) {
-  await expect(
-    this.loginPage.getError()
-  ).toBeVisible();
+Then('devo ver a página de produtos', () => {
 
-  await expect(
-    this.loginPage.getError()
-  ).toContainText(message);
-});
-
-// LOGIN APP
-
-Given('que estou logado na aplicação', async function () {
-  await this.loginPage.navigate();
-  await this.loginPage.login(
-    users.standard.username,
-    users.standard.password
-  );
-  await expect(this.page)
-    .toHaveURL(/inventory/);
-}
+    cy.url()
+      .should('include', '/inventory');
+  }
 );
 
-Given('que não estou logado', async function () {
-  await this.loginPage.navigate();
-}
+Then('devo ver a mensagem {string}', (message: string) => {
+
+    loginPage
+      .getError()
+      .should('be.visible')
+      .and('contain.text', message);
+  }
 );
 
-// LOGOUT
+Given('que estou logado na aplicação', () => {
 
-When('faço logout', async function () {
-  await this.inventoryPage.openMenu();
-  await this.inventoryPage.logout();
-}
+    loginPage.navigate();
+
+    loginPage.login(
+      users.standard.username,
+      users.standard.password
+    );
+
+    cy.url()
+      .should('include', '/inventory');
+  }
 );
 
-When('realizo login novamente', async function () {
-  await this.loginPage.login(
-    users.standard.username,
-    users.standard.password
-  );
-}
+Given('que não estou logado', () => {
+
+    loginPage.navigate();
+  }
 );
 
-Then('devo ser redirecionado para login', async function () {
-  await expect(
-    this.page.locator(
-      '[data-test="login-button"]'
-    )
-  ).toBeVisible();
-}
+Then('devo ser redirecionado para login', () => {
+
+    cy.get('[data-test="login-button"]')
+      .should('be.visible');
+  }
 );

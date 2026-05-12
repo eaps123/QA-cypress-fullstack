@@ -1,8 +1,15 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "target": "ES6",
-    "types": ["node"],
-    "esModuleInterop": true
-  }
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node", "cypress"],
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": false,
+    "skipLibCheck": true
+  },
+  "include": [
+    "**/*.ts"
+  ]
 }

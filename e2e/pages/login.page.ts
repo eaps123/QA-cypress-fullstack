@@ -1,43 +1,47 @@
-import { Page } from '@playwright/test';
 import environment from '../../config/env';
 import { users } from '../../config/data/users';
 
 export class LoginPage {
-  constructor(private page: Page) {}
 
   private readonly usernameInput = '#user-name';
   private readonly passwordInput = '#password';
   private readonly loginBtn = '#login-button';
   private readonly errorMessage = '[data-test="error"]';
 
-  async navigate() {
-    await this.page.goto(environment.web.saucedemo, {
-      waitUntil: 'domcontentloaded',
-      timeout: 60000
-    });
+  navigate() {
+    cy.visit(environment.web.saucedemo);
   }
 
-  async login(username: string, password: string) {
-    await this.page.fill(this.usernameInput, username);
-    await this.page.fill(this.passwordInput, password);
-    await this.page.click(this.loginBtn);
+  login(username: string, password: string) {
+
+    if (username) {
+      cy.get(this.usernameInput).type(username);
+    }
+
+    if (password) {
+      cy.get(this.passwordInput).type(password);
+    }
+
+    cy.get(this.loginBtn).click();
   }
 
-  async loginAsStandardUser() {
-    await this.login(
+  loginAsStandardUser() {
+
+    this.login(
       users.standard.username,
       users.standard.password
     );
   }
 
-  async loginWithInvalidPassword() {
-    await this.login(
+  loginWithInvalidPassword() {
+
+    this.login(
       users.standard.username,
       users.invalid.password
     );
   }
 
   getError() {
-    return this.page.locator(this.errorMessage);
+    return cy.get(this.errorMessage);
   }
 }
