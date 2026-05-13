@@ -1,51 +1,39 @@
-import { test, expect } from '@playwright/test';
-import env from '../../config/env';
-import { ApiClient } from '../clients/apiClient';
 import { AuthService } from '../services/AuthService';
 import { AuthFactory } from '../factories/auth.factory';
 import { AuthSchema } from '../schemas/auth.schema';
 
-test.describe('Auth API', () => {
-  let client: ApiClient;
-  let authService: AuthService;
+describe('Auth API', () => {
 
-  test.beforeEach(async () => {
-    client = new ApiClient(
-      env.api.dummy
-    );
-    await client.init();
-    authService =
-      new AuthService();
+  const authService = new AuthService();
+
+  it('POST - login válido', () => {
+
+    authService
+      .login(AuthFactory.validUser())
+      .then((response) => {
+
+        expect(response.status).to.eq(200);
+
+        expect(
+          response.headers['content-type']
+        ).to.include('application/json');
+
+        AuthSchema.parse(response.body);
+      });
   });
 
-  test.afterEach(async () => {
-    await client.dispose();
-  });
+  it('POST - login inválido', () => {
 
-  test('POST - login válido', async () => {
+    authService
+      .login(AuthFactory.invalidUser())
+      .then((response) => {
 
-    const response =
-      await authService.login(
-        AuthFactory.validUser()
-      );
-    expect(response.status()).toBe(200);
-    expect(
-      response.headers()['content-type']
-    ).toContain('application/json');
-    const body = await response.json();
-    AuthSchema.parse(body);
-  });
+        expect([400, 401])
+          .to.include(response.status);
 
-  test('POST - login inválido', async () => {
-    const response =
-      await authService.login(
-        AuthFactory.invalidUser()
-      );
-    expect([400, 401]).toContain(
-      response.status()
-    );
-    expect(
-      response.headers()['content-type']
-    ).toContain('application/json');
+        expect(
+          response.headers['content-type']
+        ).to.include('application/json');
+      });
   });
 });

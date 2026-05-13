@@ -3,35 +3,34 @@
 - badge
 - itens
 - iniciar checkout */
-import { Page, Locator } from '@playwright/test';
-
 export class CartPage {
 
-  constructor(private page: Page) {}
-  private readonly checkoutButton =
+  private checkoutButton =
     '#checkout';
 
-  private readonly cartItem =
+  private cartItem =
     '.cart_item';
 
-  private readonly cartBadge =
+  private cartBadge =
     '.shopping_cart_badge';
 
-  private readonly emptyCartMessage =
+  private emptyCartMessage =
     '[data-test="error"]';
 
-  async startCheckout() {
-    await this.page.click(this.checkoutButton);
+  startCheckout() {
+    cy.get(this.checkoutButton)
+      .click();
   }
-  async getCartItemsCount(): Promise<number> {
-    return await this.page
-      .locator(this.cartItem)
-      .count();
+
+  getCartItemsCount() {
+    return cy.get(this.cartItem);
   }
-  getCartBadge(): Locator {
-    return this.page.locator(this.cartBadge);
+
+  getCartBadge() {
+    return cy.get(this.cartBadge);
   }
-  getEmptyCartMessage(): Locator {
-    return this.page.locator(this.emptyCartMessage);
+
+  getEmptyCartMessage() {
+    return cy.get(this.emptyCartMessage);
   }
 }

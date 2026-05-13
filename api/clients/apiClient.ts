@@ -1,65 +1,72 @@
-import {
-  request,
-  APIRequestContext,
-  APIResponse
-} from '@playwright/test';
-
 export class ApiClient {
-  private context!: APIRequestContext;
 
   constructor(
     private baseURL: string,
     private token?: string
-  ) { }
+  ) {}
 
-  async init() {
-    this.context = await request.newContext({
-      baseURL: this.baseURL,
+  private getHeaders() {
 
-      extraHTTPHeaders: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'User-Agent': 'qa-automation',
+    return {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'User-Agent': 'qa-automation',
 
-        ...(this.token && {
-          Authorization: `Bearer ${this.token}`
-        })
-      }
-    });
+      ...(this.token && {
+        Authorization: `Bearer ${this.token}`
+      })
+    };
   }
 
-  async get(
+  get(
     endpoint: string,
-    params?: Record<string, string | number>
-  ): Promise<APIResponse> {
-    return this.context.get(endpoint, {
-      params
+    qs?: Record<string, string | number>
+  ) {
+
+    return cy.request({
+      method: 'GET',
+      url: `${this.baseURL}${endpoint}`,
+      qs,
+      headers: this.getHeaders(),
+      failOnStatusCode: false
     });
   }
 
-  async post(
+  post<T = object>(
     endpoint: string,
-    data?: unknown
-  ): Promise<APIResponse> {
-    return this.context.post(endpoint, {
-      data: data
+    body?: T
+  ) {
+
+    return cy.request({
+      method: 'POST',
+      url: `${this.baseURL}${endpoint}`,
+      body: body as Cypress.RequestBody,
+      headers: this.getHeaders(),
+      failOnStatusCode: false
     });
   }
 
-  async put(
+  put<T = object>(
     endpoint: string,
-    data?: unknown
-  ): Promise<APIResponse> {
-    return this.context.put(endpoint, {
-      data: data
+    body?: T
+  ) {
+
+    return cy.request({
+      method: 'PUT',
+      url: `${this.baseURL}${endpoint}`,
+      body: body as Cypress.RequestBody,
+      headers: this.getHeaders(),
+      failOnStatusCode: false
     });
   }
 
-  async delete(endpoint: string): Promise<APIResponse> {
-    return this.context.delete(endpoint);
-  }
+  delete(endpoint: string) {
 
-  async dispose() {
-    await this.context.dispose();
+    return cy.request({
+      method: 'DELETE',
+      url: `${this.baseURL}${endpoint}`,
+      headers: this.getHeaders(),
+      failOnStatusCode: false
+    });
   }
 }

@@ -1,71 +1,52 @@
-import { Page, Locator } from '@playwright/test';
-
 export class InventoryPage {
-  constructor(private page: Page) {}
 
-  // SELECTORS
-
-  private readonly addToCartBtn =
+  private addToCartBtn =
     '.inventory_item button';
 
-  private readonly cartIcon =
+  private cartIcon =
     '.shopping_cart_link';
 
-  private readonly cartBadge =
+  private cartBadge =
     '.shopping_cart_badge';
 
-  private readonly menuBtn =
+  private menuBtn =
     '#react-burger-menu-btn';
 
-  private readonly logoutBtn =
+  private logoutBtn =
     '#logout_sidebar_link';
 
-  // ACTIONS
+  addProduct() {
 
-  async addProduct() {
-    await this.page.click(
-      this.addToCartBtn
-    );
+    cy.get(this.addToCartBtn)
+      .first()
+      .click();
   }
 
-  async addProductById(
-    productId: string
-  ) {
-    await this.page.click(`[data-test="add-to-cart-${productId}"]`);
+  addProductById(productId: string) {
+    cy.get(`[data-test="add-to-cart-${productId}"]`).click();
   }
 
-  async addMultipleProducts() {
-    await this.addProductById(
-      'sauce-labs-backpack'
-    );
-    await this.addProductById(
-      'sauce-labs-bike-light'
-    );
+  addMultipleProducts() {
+    this.addProductById('sauce-labs-backpack');
+    this.addProductById('sauce-labs-bike-light');
   }
 
-  async goToCart() {
-    await this.page.click(
-      this.cartIcon
-    );
+  goToCart() {
+    cy.get(this.cartIcon)
+      .click();
   }
 
-  async openMenu() {
-    await this.page.click(
-      this.menuBtn
-    );
+  openMenu() {
+    cy.get(this.menuBtn)
+      .click();
   }
 
-  async logout() {
-    await this.page.click(
-      this.logoutBtn
-    );
+  logout() {
+    cy.get(this.logoutBtn)
+      .click();
   }
 
-  // LOCATORS
-
-  getCartBadge(): Locator {
-    return this.page.locator(
-      this.cartBadge
-    );
+  getCartBadge() {
+    return cy.get(this.cartBadge);
   }
 }

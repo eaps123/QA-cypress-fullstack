@@ -4,7 +4,6 @@
 - finalizar
 - mensagens */
 
-import { Page, Locator } from '@playwright/test';
 type CheckoutData = {
   firstName: string;
   lastName: string;
@@ -12,82 +11,68 @@ type CheckoutData = {
 };
 
 export class CheckoutPage {
-  constructor(private page: Page) {}
 
-  // SELECTORS
-
-  private readonly firstName =
+  private firstName =
     '#first-name';
 
-  private readonly lastName =
+  private lastName =
     '#last-name';
 
-  private readonly postalCode =
+  private postalCode =
     '#postal-code';
 
-  private readonly continueBtn =
+  private continueBtn =
     '#continue';
 
-  private readonly finishBtn =
+  private finishBtn =
     '#finish';
 
-  private readonly successMsg =
+  private successMsg =
     '.complete-header';
 
-  private readonly errorMsg =
+  private errorMsg =
     '[data-test="error"]';
 
-  // ACTIONS
+  fillForm(checkoutData: CheckoutData) {
 
-  async fillForm(checkoutData: CheckoutData) {
-    await this.page.fill(
-      this.firstName,
-      checkoutData.firstName
-    );
+    if (checkoutData.firstName) {
+      cy.get(this.firstName)
+        .type(checkoutData.firstName);
+    }
 
-    await this.page.fill(
-      this.lastName,
-      checkoutData.lastName
-    );
+    if (checkoutData.lastName) {
+      cy.get(this.lastName)
+        .type(checkoutData.lastName);
+    }
 
-    await this.page.fill(
-      this.postalCode,
-      checkoutData.postalCode
-    );
+    if (checkoutData.postalCode) {
+      cy.get(this.postalCode)
+        .type(checkoutData.postalCode);
+    }
   }
 
-  async continue() {
-    await this.page.click(
-      this.continueBtn
-    );
+  continue() {
+    cy.get(this.continueBtn)
+      .click();
   }
 
-  async finish() {
-    await this.page.click(
-      this.finishBtn
-    );
+  finish() {
+    cy.get(this.finishBtn)
+      .click();
   }
 
-  async startCheckoutFlow(
+  startCheckoutFlow(
     checkoutData: CheckoutData
   ) {
-    await this.fillForm(
-      checkoutData
-    );
-    await this.continue();
+    this.fillForm(checkoutData);
+    this.continue();
   }
 
-  // LOCATORS
-
-  getSuccessMessage(): Locator {
-    return this.page.locator(
-      this.successMsg
-    );
+  getSuccessMessage() {
+    return cy.get(this.successMsg);
   }
 
-  getErrorMessage(): Locator {
-    return this.page.locator(
-      this.errorMsg
-    );
+  getErrorMessage() {
+    return cy.get(this.errorMsg);
   }
 }

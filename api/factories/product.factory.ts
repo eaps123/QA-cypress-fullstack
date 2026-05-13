@@ -38,9 +38,9 @@ export class ProductFactory {
   static invalidProduct() {
     return {
       title: '',
-      price: 'invalid',
-      description: null,
-      category: 123
+      price: 'invalid' as unknown as number,
+      description: null as unknown as string,
+      category: 123 as unknown as string
     };
   }
 

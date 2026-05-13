@@ -1,0 +1,98 @@
+stages:
+  - install
+  - test
+  - performance
+  - report
+
+variables:
+  NODE_ENV: test
+
+cache:
+  paths:
+    - node_modules/
+
+# =========================
+# INSTALL
+# =========================
+
+install_dependencies:
+  stage: install
+
+  image: cypress/browsers:22.15.0
+
+  script:
+    - npm install
+
+  artifacts:
+    paths:
+      - node_modules/
+
+# =========================
+# E2E + API
+# =========================
+
+qa_tests:
+  stage: test
+
+  image: cypress/browsers:22.15.0
+
+  script:
+    - mkdir -p reports/screenshots
+    - mkdir -p reports/videos
+    - mkdir -p reports/mochawesome
+
+    - npm run test:api || true
+    - npm run test:e2e || true
+
+  artifacts:
+    when: always
+
+    paths:
+      - reports/
+
+    expire_in: 7 days
+
+# =========================
+# PERFORMANCE
+# =========================
+
+performance_tests:
+  stage: performance
+
+  image: grafana/k6:latest
+
+  script:
+    - mkdir -p reports/k6
+
+    - k6 run performance/load-test.js \
+      --summary-export=reports/k6/k6-summary.json
+
+  artifacts:
+    when: always
+
+    paths:
+      - reports/k6/
+
+# =========================
+# REPORTS
+# =========================
+
+generate_reports:
+  stage: report
+
+  image: node:20
+
+  script:
+    - npm install
+
+    - npm run report:api || true
+    - npm run report:performance || true
+    - npm run report || true
+
+  artifacts:
+    when: always
+
+    paths:
+      - reports/
+
+    expire_in: 7 days

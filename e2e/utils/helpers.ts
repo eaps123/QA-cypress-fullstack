@@ -1,22 +1,17 @@
-import { expect, Page } from '@playwright/test';
 import fs from 'fs';
 
-export async function waitForInventoryPage(page: Page) {
-  await expect(page).toHaveURL(/inventory/);
+export function waitForInventoryPage() {
+  cy.url()
+    .should('include', '/inventory');
 }
 
-export async function takeScreenshot(
-  page: Page,
+export function takeScreenshot(
   fileName: string
 ) {
-  await page.screenshot({
-    path: `reports/screenshots/${fileName}.png`,
-    fullPage: true
-  });
+  cy.screenshot(fileName);
 }
 
 export function ensureReportsFolders() {
-
   fs.mkdirSync(
     'reports/screenshots',
     { recursive: true }

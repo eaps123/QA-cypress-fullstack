@@ -2,34 +2,53 @@ import env from '../../config/env';
 import { ApiClient } from '../clients/apiClient';
 
 export class ProductService {
+
   private client: ApiClient;
 
   constructor() {
-    this.client = new ApiClient(env.api.dummy);
+
+    this.client = new ApiClient(
+      env.api.dummy
+    );
   }
 
-  async getProducts() {
-    await this.client.init();
-    return this.client.get('/products');
+  getProducts() {
+
+    return this.client.get(
+      '/products'
+    );
   }
 
-  async getProductById(id: number) {
-    await this.client.init();
-    return this.client.get(`/products/${id}`);
+  getProductById(id: number) {
+
+    return this.client.get(
+      `/products/${id}`
+    );
   }
 
-  async createProduct(payload: unknown) {
-    await this.client.init();
-    return this.client.post('/products/add', payload);
+  createProduct(payload: object) {
+
+    return this.client.post(
+      '/products/add',
+      payload
+    );
   }
 
-  async updateProduct(id: number, payload: unknown) {
-    await this.client.init();
-    return this.client.put(`/products/${id}`, payload);
+  updateProduct(
+    id: number,
+    payload: object
+  ) {
+
+    return this.client.put(
+      `/products/${id}`,
+      payload
+    );
   }
 
-  async deleteProduct(id: number) {
-    await this.client.init();
-    return this.client.delete(`/products/${id}`);
+  deleteProduct(id: number) {
+
+    return this.client.delete(
+      `/products/${id}`
+    );
   }
 }

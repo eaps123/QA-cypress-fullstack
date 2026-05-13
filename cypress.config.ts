@@ -3,63 +3,95 @@ import createBundler from "@bahmutov/cypress-esbuild-preprocessor";
 import {
   addCucumberPreprocessorPlugin,
 } from "@badeball/cypress-cucumber-preprocessor";
-import {
+
+const {
   createEsbuildPlugin,
-} from "@badeball/cypress-cucumber-preprocessor/esbuild";
+} = require(
+  "@badeball/cypress-cucumber-preprocessor/esbuild"
+);
 
 export default defineConfig({
-
-  video: true,
-
-  chromeWebSecurity: false,
 
   viewportWidth: 1440,
   viewportHeight: 900,
 
-  retries: 1,
+  video: true,
 
-  screenshotsFolder: "reports/screenshots",
+  screenshotOnRunFailure: true,
 
-  videosFolder: "reports/videos",
+  screenshotsFolder:
+    "reports/screenshots",
 
-  reporter: "cypress-mochawesome-reporter",
+  videosFolder:
+    "reports/videos",
+
+  downloadsFolder:
+    "cypress/downloads",
+
+  fixturesFolder:
+    "cypress/fixtures",
+
+  reporter:
+    "cypress-mochawesome-reporter",
 
   reporterOptions: {
-    reportDir: "reports/mochawesome",
+
+    reportDir:
+      "reports/mochawesome",
+
     overwrite: false,
+
     html: true,
-    json: true
+
+    json: true,
+
+    embeddedScreenshots: true,
+
+    inlineAssets: true
+  },
+
+  env: {
+
+    ENV: "qa"
   },
 
   e2e: {
 
-    baseUrl: "https://www.saucedemo.com",
+    baseUrl:
+      "https://www.saucedemo.com",
 
-    specPattern: "./e2e/features/**/*.feature",
+    specPattern: [
+      "e2e/features/**/*.feature",
+      "api/tests/**/*.cy.ts"
+    ],
 
-    supportFile: "cypress/support/e2e.ts",
+    supportFile:
+      "cypress/support/e2e.ts",
 
-    async setupNodeEvents(on, config) {
+    async setupNodeEvents(
+      on: Cypress.PluginEvents,
+      config: Cypress.PluginConfigOptions
+    ) {
 
       await addCucumberPreprocessorPlugin(
         on,
         config
       );
-    
+
       on(
         "file:preprocessor",
+
         createBundler({
-          plugins: [createEsbuildPlugin(config)],
+          plugins: [
+            createEsbuildPlugin(config)
+          ],
         })
       );
-    
+
       require(
         "cypress-mochawesome-reporter/plugin"
       )(on);
-    
-      config.env.typescript =
-        require.resolve("typescript");
-    
+
       return config;
     },
   },
