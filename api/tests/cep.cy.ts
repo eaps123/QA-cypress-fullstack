@@ -1,4 +1,4 @@
-import { CepService } from '../services/CepService';
+import { CepService } from '../services/cep.service';
 import { CepSchema } from '../schemas/cep.schema';
 
 describe('CEP API', () => {

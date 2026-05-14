@@ -1,2 +1,11 @@
-node_modules/
 test-results/
+# Reports
+reports/
+public/
+
+# Cypress artifacts
+cypress/videos/
+cypress/screenshots/
+
+# Node
+node_modules/

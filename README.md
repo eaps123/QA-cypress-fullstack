@@ -74,7 +74,7 @@ Utilizada para:
 QA-automation-cypress/
 ├── api/
 │   ├── clients/
-│   │   └── apiClient.ts
+│   │   └── api.client.ts
 │   │
 │   ├── factories/
 │   │   ├── auth.factory.ts
@@ -88,16 +88,16 @@ QA-automation-cypress/
 │   │   └── product.schema.ts
 │   │
 │   ├── services/
-│   │   ├── AuthService.ts
-│   │   ├── CartService.ts
-│   │   ├── CepService.ts
-│   │   └── ProductService.ts
+│   │   ├── auth.service.ts
+│   │   ├── cart.service.ts
+│   │   ├── cep.service.ts
+│   │   └── product.service.ts
 │   │
 │   └── tests/
-│       ├── auth.spec.ts
-│       ├── cart.spec.ts
-│       ├── cep.spec.ts
-│       └── products.spec.ts
+│       ├── auth.cy.ts
+│       ├── cart.cy.ts
+│       ├── cep.cy.ts
+│       └── products.cy.ts
 │
 ├── config/
 │   ├── data/
@@ -119,18 +119,17 @@ QA-automation-cypress/
 │   │   └── login.feature
 │   │ 
 │   ├── pages/
-│   │   ├── CartPage.ts
-│   │   ├── CheckoutPage.ts
-│   │   ├── InventoryPage.ts
-│   │   └── LoginPage.ts
+│   │   ├── cart.page.ts
+│   │   ├── checkout.page.ts
+│   │   ├── inventory.page.ts
+│   │   └── login.page.ts
 │   │ 
 │   ├── steps/
 │   │   ├── checkout.steps.ts
 │   │   └── login.steps.ts
 │   │ 
 │   ├── support/
-│   │   ├── hooks.ts
-│   │   └── world.ts
+│   │   └── hooks.ts
 │   │ 
 │   └── utils/
 │       ├── faker.ts
@@ -161,7 +160,6 @@ QA-automation-cypress/
 │   ├── fixtures/
 │   ├── downloads/
 │   └── support/
-│       ├── commands.ts
 │       └── e2e.ts
 │
 ├── .gitignore

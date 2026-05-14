@@ -1,4 +1,4 @@
-import { AuthService } from '../services/AuthService';
+import { AuthService } from '../services/auth.service';
 import { AuthFactory } from '../factories/auth.factory';
 import { AuthSchema } from '../schemas/auth.schema';
 

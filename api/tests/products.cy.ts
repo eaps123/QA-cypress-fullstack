@@ -1,4 +1,4 @@
-import { ProductService } from '../services/ProductService';
+import { ProductService } from '../services/product.service';
 import { ProductFactory } from '../factories/product.factory';
 import { ProductSchema } from '../schemas/product.schema';
 

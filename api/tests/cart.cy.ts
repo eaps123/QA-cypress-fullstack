@@ -1,4 +1,4 @@
-import { CartService } from '../services/CartService';
+import { CartService } from '../services/cart.service';
 import { CartFactory } from '../factories/cart.factory';
 import { CartSchema } from '../schemas/cart.schema';
 

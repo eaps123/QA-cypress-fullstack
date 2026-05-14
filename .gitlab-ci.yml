@@ -3,6 +3,7 @@ stages:
   - test
   - performance
   - report
+  - deploy
 
 variables:
   NODE_ENV: test
@@ -89,10 +90,33 @@ generate_reports:
     - npm run report:performance || true
     - npm run report || true
 
+    # PUBLIC FOLDER (GITLAB PAGES)
+    - mkdir -p public
+
+    - cp -r reports/* public/
+
   artifacts:
     when: always
 
     paths:
       - reports/
+      - public/
 
     expire_in: 7 days
+
+# =========================
+# GITLAB PAGES
+# =========================
+
+pages:
+  stage: deploy
+
+  script:
+    - echo "Deploy GitLab Pages"
+
+  artifacts:
+    paths:
+      - public
+
+  only:
+    - main

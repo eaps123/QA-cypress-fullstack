@@ -1,5 +1,5 @@
 import env from '../../config/env';
-import { ApiClient } from '../clients/apiClient';
+import { ApiClient } from '../clients/api.client';
 
 export class ProductService {
 
